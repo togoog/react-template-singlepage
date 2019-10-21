@@ -2,7 +2,7 @@
 
 ## 简介
 
-这是Netease EHR团队研制的一款**基于 React + Webpack**基础配置的前端`单页（single page application）`项目脚手架。
+这是一款**基于 React + Webpack**基础配置的前端`单页（single page application）`项目脚手架。
 
 ## 已支持
 
@@ -64,7 +64,6 @@ project
 |   |   | api // 接口
 |   |   | config.js // 接口环境变量
 |   |   | http.js // axios二次封装
-|   |   | index.js // axios暴露api出口
 |   |
 |   |____components // 组件
 │   |   |____common // 通用组件
