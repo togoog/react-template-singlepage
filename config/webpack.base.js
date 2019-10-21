@@ -5,7 +5,6 @@ const WebpackBar = require('webpackbar');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const { getLessVariables } = require('./tools');
 const { isProduction, sourceMapEnabled } = './env';
 
 module.exports = {
@@ -54,8 +53,18 @@ module.exports = {
                                 loader: require.resolve('less-loader'),
                                 options: {
                                     sourceMap: sourceMapEnabled,
-                                    modifyVars: getLessVariables(['src/assets/css/variables.less', 'src/assets/css/antd-reset.less']),
                                     javascriptEnabled: true
+                                }
+                            },
+                            {
+                                loader: 'style-resources-loader',
+                                options: {
+                                    patterns: [
+                                        path.resolve(paths.appCss, 'variables.less'),
+                                        path.resolve(paths.appCss, 'antd-reset.less'),
+                                        path.resolve(paths.appCss, 'function.less')
+                                    ],
+                                    injector: 'append'
                                 }
                             }
                         ],
