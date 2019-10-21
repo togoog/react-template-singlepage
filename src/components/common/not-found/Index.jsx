@@ -3,7 +3,7 @@ import img from '@/assets/img/404.png';
 
 function NotFound(props) {
     return (
-        <div className="m-not-found" style={{ height: '100%', background: '#ececec', overflow: 'hidden' }}>
+        <div className="m-not-found">
             <img src={img} alt="404" />
         </div>
     );
