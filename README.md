@@ -137,6 +137,10 @@ project
     -   统一改为BrowserRouter（按需引入，参考intro）
     -   修复`<Routes />`无法传参的bug
 
+-   v1.1.2 —— 2019-10-21
+    -   引入style-resources-loader & 移除方法getLessVariables
+    -   支持Less Parametric Mixins（带参数的混合：.font-normal）
+
 ## License
 
 The code is distributed under the [MIT](https://opensource.org/licenses/MIT) license
