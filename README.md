@@ -151,6 +151,10 @@ project
 -   v1.1.5 —— 2019-10-31
     -   修复useFetch中dispatch依赖重新定义问题
 
+-   v1.1.6 —— 2019-11-12
+    -   优化DLL配置 & 全局配置浏览器常量
+    -   配置Axios中rootURL在生产环境下调用的api为绝对路径
+
 ## License
 
 The code is distributed under the [MIT](https://opensource.org/licenses/MIT) license
