@@ -4,6 +4,7 @@ const webpack = require('webpack');
 const HappyPack = require('happypack');
 const { CleanTerminalPlugin } = require('./tools');
 const baseWebpackConfig = require('./webpack.base');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 const devServer = require('./webpackDevServer.config');
 const paths = require('./paths');
 
@@ -102,9 +103,24 @@ const webpackConfig = merge(baseWebpackConfig, {
         new webpack.HotModuleReplacementPlugin(),
         new webpack.NamedModulesPlugin(),
 
-        new webpack.DllReferencePlugin({
-            manifest: path.join(paths.appVendor, 'antd.manifest.json')
-        }),
+        // 引用DLL
+        new webpack.DllReferencePlugin(
+            {
+                manifest: path.join(paths.appVendor, 'antd.manifest.json')
+            },
+            {
+                manifest: path.join(paths.appVendor, 'react.manifest.json')
+            }
+        ),
+
+        // 直接拷贝vendor资源目录
+        new CopyWebpackPlugin([
+            {
+                from: paths.appVendor, // vendor资源目录源地址
+                to: path.join(paths.appBuild, 'vendor') //目标地址，相对于output的path目录
+            }
+        ]),
+
         new HappyPack({
             id: 'happyCSS',
             threads: 4,

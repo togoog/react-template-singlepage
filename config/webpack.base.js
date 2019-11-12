@@ -3,8 +3,7 @@ const paths = require('./paths');
 const webpack = require('webpack');
 const WebpackBar = require('webpackbar');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
-const { isProduction } = './env';
+const { isProduction } = require('./env');
 
 module.exports = {
     entry: paths.appIndexJs,
@@ -27,6 +26,8 @@ module.exports = {
         rules: [{ parser: { requireEnsure: false } }]
     },
     plugins: [
+        // 定义（浏览器环境下的）全局常量
+        new webpack.DefinePlugin({ 'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV) }),
         // 动态生成html模板插件配置
         new HtmlWebpackPlugin({
             inject: true, // 是否将js放在body的末尾
@@ -35,7 +36,8 @@ module.exports = {
             mobile: true,
             favicon: './public/favicon.ico',
             templateParameters: {
-                AntdDllSlot: !isProduction ? '<script src="./../../vendor/antd.dll.js"></script>' : ''
+                AntdDllSlot: !isProduction ? `<script src="/vendor/antd.dll.js"></script>` : '',
+                ReactDllSlot: !isProduction ? `<script src="/vendor/react.dll.js"></script>` : ''
             },
             minify: {
                 removeComments: true,
@@ -54,19 +56,6 @@ module.exports = {
             },
             chunksSortMode: 'dependency'
         }),
-
-        // 加载React（以DLL的形式）
-        new webpack.DllReferencePlugin({
-            manifest: path.join(paths.appVendor, 'react.manifest.json')
-        }),
-
-        // 直接拷贝vendor资源目录
-        new CopyWebpackPlugin([
-            {
-                from: paths.appVendor, // vendor资源目录源地址
-                to: path.join(paths.appBuild, 'vendor') //目标地址，相对于output的path目录
-            }
-        ]),
 
         // 打包忽略locale、moment
         new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
