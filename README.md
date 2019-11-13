@@ -154,6 +154,7 @@ project
 -   v1.1.6 —— 2019-11-12
     -   优化DLL配置 & 全局配置浏览器常量
     -   配置Axios中rootURL在生产环境下调用的api为绝对路径
+    -   引入data-wrapper通用业务组件（可复用页面空态）
 
 ## License
 
