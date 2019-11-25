@@ -8,7 +8,6 @@
  * 三个内部方法：
  * @function findRoute 根据path，查找包括目标路由在内，及其上下级路由的信息；
  * @function getEntryName 获取当前入口信息（多页应用使用）
- * @function addLoadable 进行组件的懒加载加工
  *
  * 两个暴露方法：
  * @function getSubList 获取当前路由的子路由列表信息
@@ -23,6 +22,8 @@ import Loadable from 'react-loadable';
 import ULoading from '@/components/common/u-loading';
 import { deepClone } from '@/utils/tools';
 import allRoutes from '@/router';
+
+const lazy = loader => Loadable({ loader, loading: ULoading });
 
 const findRoute = (path = location.pathname.substring(location.pathname.lastIndexOf('/'))) => {
     let target = {};
@@ -48,23 +49,6 @@ const findRoute = (path = location.pathname.substring(location.pathname.lastInde
     return { target, targetSub };
 };
 
-const addLoadable = (routes = []) => {
-    const _add = loader => Loadable({ loader, loading: ULoading });
-
-    const _loop = routes => {
-        for (let i = 0; i < routes.length; i++) {
-            routes[i].component.name === 'component' && (routes[i].component = _add(routes[i].component));
-
-            if ((routes[i].sub || []).length) {
-                _loop(routes[i].sub);
-            }
-        }
-    };
-
-    _loop(routes);
-    return routes;
-};
-
 export const Routes = props => {
     const _buildRoutes = () => {
         let routes = [], // 即将要渲染的路由表
@@ -87,13 +71,12 @@ export const Routes = props => {
             routes = targetSub; // 取子路由，用作生成Route
         }
 
-        routes = addLoadable(routes); // 懒加载加工
         return [routes, currentRoute, hasRedirect];
     };
 
     // 渲染组件
     const _renderComponent = ({ link, redirect, component }, routeProps) => {
-        let Component = deepClone(component);
+        let Component = lazy(deepClone(component)); // 将路由组件设为懒加载
         let { origin, ...propsFromParent } = props;
         // propsFromParent包括：上一级的所有props（除了origin）
         // routeProps包括当前路由的：match、location、history
