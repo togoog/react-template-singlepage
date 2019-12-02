@@ -15,7 +15,7 @@ module.exports = {
     },
     resolve: {
         modules: ['node_modules', paths.appNodeModules],
-        extensions: ['.js', '.json', '.jsx'],
+        extensions: ['.js', '.json', '.jsx', '.tsx'],
         alias: {
             '@ant-design/icons/lib/dist$': paths.antdIcon,
             '@': paths.appSrc

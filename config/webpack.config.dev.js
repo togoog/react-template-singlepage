@@ -27,7 +27,7 @@ const webpackConfig = merge(baseWebpackConfig, {
     module: {
         rules: [
             {
-                test: /\.(js|jsx)$/,
+                test: /\.(js|jsx|tsx)$/,
                 enforce: 'pre',
                 use: 'happypack/loader?id=happyESLint',
                 include: paths.appSrc
@@ -82,13 +82,17 @@ const webpackConfig = merge(baseWebpackConfig, {
                         use: 'happypack/loader?id=happyBabel'
                     },
                     {
+                        test: /\.tsx?$/,
+                        loader: 'ts-loader'
+                    },
+                    {
                         test: /\.css$/,
                         exclude: /node_modules/,
                         include: paths.appSrc,
                         use: 'happypack/loader?id=happyCSS'
                     },
                     {
-                        exclude: [/\.(js|jsx)$/, /\.html$/, /\.json$/],
+                        exclude: [/\.(js|jsx|tsx)$/, /\.html$/, /\.json$/],
                         loader: require.resolve('file-loader'),
                         options: {
                             name: 'static/media/[name].[hash:8].[ext]'
